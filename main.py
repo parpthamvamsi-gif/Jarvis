@@ -12,6 +12,8 @@ if platform == 'android':
     Intent = autoclass('android.content.Intent')
     RecognizerIntent = autoclass('android.speech.RecognizerIntent')
     SpeechRecognizer = autoclass('android.speech.SpeechRecognizer')
+    TextToSpeech = autoclass('android.speech.tts.TextToSpeech')
+    Locale = autoclass('java.util.Locale')
 
     class SpeechListener(PythonJavaClass):
         __javainterfaces__ = ['android/speech/RecognitionListener']
@@ -48,6 +50,19 @@ if platform == 'android':
         @java_method('(ILandroid/os/Bundle;)V')
         def onEvent(self, eventType, params): pass
 
+    class TTSOnInitListener(PythonJavaClass):
+        __javainterfaces__ = ['android/speech/tts/TextToSpeech$OnInitListener']
+        __javacontext__ = 'app'
+
+        def __init__(self, tts_instance):
+            super().__init__()
+            self.tts = tts_instance
+
+        @java_method('(I)V')
+        def onInit(self, status):
+            if status == TextToSpeech.SUCCESS:
+                self.tts.setLanguage(Locale.US)
+
 class JarvisApp(App):
     def build(self):
         self.layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
@@ -57,11 +72,22 @@ class JarvisApp(App):
         
         self.layout.add_widget(self.label)
         self.layout.add_widget(self.btn)
+        
+        self.tts = None
         return self.layout
 
     def on_start(self):
         if platform == 'android':
             request_permissions([Permission.RECORD_AUDIO, Permission.INTERNET])
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            activity = PythonActivity.mActivity
+            self.tts_listener = TTSOnInitListener(None)
+            self.tts = TextToSpeech(activity, self.tts_listener)
+            self.tts_listener.tts = self.tts
+
+    def speak(self, text):
+        if platform == 'android' and self.tts:
+            self.tts.speak(text, TextToSpeech.QUEUE_FLUSH, None, None)
 
     def start_listening(self, instance):
         if platform == 'android':
@@ -83,7 +109,15 @@ class JarvisApp(App):
     @mainthread
     def on_speech_result(self, text):
         self.label.text = f"You said: {text}"
+        
+        # Simple Jarvis Response Logic
+        response = f"I heard you say {text}"
+        if "hello" in text.lower():
+            response = "Hello boss! Jarvis system online and ready."
+        elif "how are you" in text.lower():
+            response = "All systems operational. How can I assist you?"
+            
+        self.speak(response)
 
 if __name__ == '__main__':
     JarvisApp().run()
-            
