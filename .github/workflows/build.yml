@@ -34,11 +34,18 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         pip install "cython==0.29.33" "buildozer==1.5.0"
 
-    - name: Link Existing Android SDK & Accept Licenses
+    - name: Download and Setup Legacy Command Line Tools
       run: |
-        mkdir -p ~/.buildozer/android/platform
-        ln -s $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        mkdir -p ~/.buildozer/android/platform/android-sdk/tools
+        curl -s https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -o sdk-tools.zip
+        unzip -q sdk-tools.zip -d ~/.buildozer/android/platform/android-sdk/
+        rm sdk-tools.zip
+
+    - name: Pre-accept Android SDK Licenses
+      run: |
+        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+        echo -e "\n243337357737b23d4789242ef05c03f657577c82\n89330d222637a000b01f7e34be8293d1557d9f7c\nd56f518547233e723d37d256d7f110f77d6c4863" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
 
     - name: Build APK with Buildozer
       run: |
@@ -49,4 +56,3 @@ jobs:
       with:
         name: Jarvis-APK
         path: bin/*.apk
-        
