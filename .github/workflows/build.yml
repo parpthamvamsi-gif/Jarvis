@@ -13,11 +13,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Build with Buildozer
-      uses: subosito/buildozer-action@v1
+    - name: Build APK with Buildozer Action
+      uses: incanta-pub/buildozer-action@v1
       with:
         command: buildozer -v android debug
-        buildozer_version: 1.5.0
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
