@@ -13,4 +13,5 @@ android.minapi = 21
 android.ndk_path = 
 android.sdk_path = 
 android.accept_sdk_license = True
+android.archs = arm64-v8a
 p4a.branch = master
