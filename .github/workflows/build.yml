@@ -2,58 +2,38 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
-  workflow_dispatch:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
     - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libssl-dev libffi-dev python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsqlite3-dev sqlite3 bzip2 libbz2-dev zlib1g-dev openjdk-17-jdk curl git autoconf libtool pkg-config ccache zip unzip
+        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
 
-    - name: Install Python Build Tools
+    - name: Install Buildozer & Cython
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        pip install "cython==0.29.33" "buildozer==1.5.0"
-
-    - name: Setup Command Line Tools & Symlinks
-      run: |
-        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-        curl -s https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -o cmdline.zip
-        unzip -q cmdline.zip
-        mv cmdline-tools/* ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/
-        rm -rf cmdline-tools cmdline.zip
-        mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
-        ln -sf ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/
-
-    - name: Force Accept All Android SDK Licenses
-      run: |
-        yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/home/runner/.buildozer/android/platform/android-sdk --licenses || true
+        pip install --upgrade pip
+        pip install cython==0.29.33
+        pip install buildozer==1.5.0
 
     - name: Build APK with Buildozer
       run: |
-        buildozer -v android debug
+        yes | buildozer android debug
 
     - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: Jarvis-APK
         path: bin/*.apk
+        
