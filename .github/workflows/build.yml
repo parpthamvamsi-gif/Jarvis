@@ -34,4 +34,3 @@ jobs:
       with:
         name: Jarvis-APK
         path: bin/*.apk
-        
