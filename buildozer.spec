@@ -5,12 +5,12 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy
+requirements = python3,kivy==2.2.1,pyjnius,android,cython==0.29.33
 orientation = portrait
 osx.kivy_version = 1.9.1
 fullscreen = 0
 android.permissions = INTERNET, RECORD_AUDIO
-android.api = 31
+android.api = 33
 android.minapi = 21
 android.ndk = 25b
 android.archs = arm64-v8a
