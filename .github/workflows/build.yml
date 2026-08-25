@@ -34,8 +34,4 @@ jobs:
         APP_CFLAGS="-Wno-error=incompatible-pointer-types" yes | buildozer android debug
 
     - name: Upload APK Artifact
-    uses: actions/upload-artifact@v4
-      with:
-        name: Jarvis-APK
-        path: bin/*.apk
-        
+    
