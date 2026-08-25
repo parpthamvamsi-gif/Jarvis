@@ -20,7 +20,8 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y build-essential ccache git libffi-dev libssl-dev python3-dev zip unzip zlib1g-dev openjdk-17-jdk
+        sudo apt install -y build-essential ccache git libffi-dev libssl-dev python3-dev zip unzip zlib1g-dev openjdk-17-jdk autoconf libtool pkg-config
+        pip install --upgrade pip
         pip install "cython<3.0.0" buildozer virtualenv
 
     - name: Build APK with Buildozer
