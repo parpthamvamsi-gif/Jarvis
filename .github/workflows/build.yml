@@ -27,7 +27,7 @@ jobs:
         pip install cython==0.29.33
         pip install buildozer==1.5.0
 
-    - name: Auto-accept Android SDK Licenses & Build APK
+    - name: Build APK with Buildozer
       run: |
         mkdir -p ~/.android
         touch ~/.android/repositories.cfg
@@ -38,3 +38,4 @@ jobs:
       with:
         name: Jarvis-APK
         path: bin/*.apk
+        
