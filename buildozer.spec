@@ -5,7 +5,7 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy==2.2.1,pyjnius,android
+requirements = python3,kivy,pyjnius,android
 osx.kivy_version = 1.9.1
 fullscreen = 0
 android.permissions = INTERNET, RECORD_AUDIO
