@@ -5,7 +5,7 @@ title = Jarvis
 
 # (str) Package name
 package.name = jarvis
-requirements = python3,kivy==2.2.1
+
 # (str) Package domain (needed for android packaging)
 package.domain = org.test
 
@@ -16,9 +16,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 
 # (list) Application requirements
-# (నీ main.py లో ఇంకేమైనా libraries ఉంటే ఇక్కడ కమా పెట్టి రాయి: python3,kivy,requests)
 requirements = python3,kivy==2.2.1
-
 
 # (str) Application versioning
 version = 0.1
