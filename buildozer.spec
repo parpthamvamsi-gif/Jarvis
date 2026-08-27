@@ -17,6 +17,7 @@ source.include_exts = py,png,jpg,kv,atlas
 
 # (list) Application requirements
 # (నీ main.py లో ఇంకేమైనా libraries ఉంటే ఇక్కడ కమా పెట్టి రాయి: python3,kivy,requests)
+requirements = python3,kivy==2.2.1
 
 
 # (str) Application versioning
