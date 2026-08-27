@@ -5,7 +5,7 @@ title = Jarvis
 
 # (str) Package name
 package.name = jarvis
-
+requirements = python3,kivy==2.2.1
 # (str) Package domain (needed for android packaging)
 package.domain = org.test
 
